@@ -183,3 +183,7 @@ flip''' f = \x y -> f y x
 -- https://typeclasses.com/ghc/no-implicit-prelude 
 -- faire ":t + TAB" une fois le NoImplicitPrelude activé (sans le NoImplicitPrelude
 -- il y a 512 possibilités apparement)
+
+-- module Volume ( computeVolumeNDimensional, DAUTRESCHOSES) where
+-- computeVolumeNDimensional domaine = intégrer n fois la fonction identité sur le domaine
+-- DAUTRESCHOSES x = faire des choses sur x
