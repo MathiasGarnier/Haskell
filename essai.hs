@@ -132,3 +132,54 @@ fib x = if x >= 2
 
 -- oh, je me suis pris un : 
 -- <interactive>: getMBlocks: VirtualAlloc MEM_COMMIT failed: Le fichier de pagination est insuffisant pour terminer cette opération.
+
+list = [0..]
+
+-- ce serait dément de réussir à implémenter un système de raisonnement par récurrence héhé (faudrait toute une
+-- structure algébrique et compagnie... HISTOIRE DE POUVOIR DEALER AVEC L'INFINI) Ou alors tout repenser ?
+-- c'est à dire raisonner sur une sur-couche plus facilement manipulable et précisément faite pour de la récurrence
+-- (récurrences forte, faible, diagonale (de Fermat je crois) [...])
+
+decomposition_add x = [[a, b] | a <- [0..x], b <- [0..x], a + b == x]
+contrainte_mult tab = [product x | x <- tab]
+-- fait à l'arrache, pas sûr du tout d'avoir fait les bonnes choses
+res_pb x = maximum (contrainte_mult (decomposition_add x))
+gen_res_pb_jusqua_x x = [res_pb solution | solution <- [0..x]]
+-- mhhh vérifier si ça marche bien et si c'est bien ça que l'on demande
+-- http://oeis.org/search?q=1%2C2%2C4%2C6%2C9%2C12%2C16%2C20%2C25%2C30&language=english&go=Search
+-- Maximum product of two integers whose sum is n. - Matthew Vandermast, Mar 04 2003
+-- moyen de faire plus compact ? plus propre ? plus rapide ? se documenter sur ces questions, en général
+-- limite en + oo du nième terme sur le n + unième terme tend vers un ?
+gen_res_pb_carre_parfait x = [res_pb solution | solution <- [0..x], y <- [0..x], res_pb solution == y**2]
+-- http://oeis.org/A008794https://jadensadventures.fandom.com/wiki/Astro_Boy hop là
+
+-- https://downloads.haskell.org/~ghc/7.0.3/docs/html/users_guide/rewrite-rules.html
+-- https://mail.haskell.org/pipermail/haskell-cafe/2004-May/006192.html
+-- https://mail.haskell.org/pipermail/haskell/2004-November/014939.html
+-- http://www.cs.columbia.edu/~sedwards/classes/2007/w4115-fall/reports/HCAS.pdf
+
+flip' f x y = f y x
+-- ou ce qui est fourni :
+flip'' :: (a -> b -> c) -> (b -> a -> c)  
+flip'' f = g  
+    where g x y = f y x  
+-- y'a une différence avec l'utilisation du where ? j'pense pas gné
+-- lambda : 
+flip''' f = \x y -> f y x
+
+
+-- It doesn't matter if you do it with the map and filter functions or list comprehensions.
+-- vraiment ?
+
+-- sum (takeWhile (<10000) (filter odd (map (^2) [1..])))  
+-- sum (takeWhile (<10000) [n^2 | n <- [1..], odd (n^2)]) 
+
+-- import Data.List (nub, sort)
+-- pour en emporter que deux parmi toutes les possibilités
+
+-- HOOGLE, so cool
+
+-- {-# LANGUAGE NoImplicitPrelude #-}
+-- https://typeclasses.com/ghc/no-implicit-prelude 
+-- faire ":t + TAB" une fois le NoImplicitPrelude activé (sans le NoImplicitPrelude
+-- il y a 512 possibilités apparement)
